@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.CheckBox;
@@ -30,13 +32,25 @@ public abstract class ActivityBase extends Activity
 	    	throw new RuntimeException("ActivityBase::onActivityContentView() returned 0"); 
 	    }
 	    
+	    onRequestFeature();
 	    setContentView(iContentView);
 	    onActivityCreate();
 	}
 	
+	protected abstract void onRequestFeature();
 	protected abstract int onActivityContentView();
 	protected abstract void onActivityCreate();
 	
+	
+	protected void removeTitle()
+	{
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+	}
+	
+	protected void removeNotificatioBar()
+	{
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+	}
 	
 	protected void orientationPortrait()
 	{
