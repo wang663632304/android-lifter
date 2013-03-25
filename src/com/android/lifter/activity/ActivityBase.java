@@ -1,6 +1,8 @@
 package com.android.lifter.activity;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.Menu;
 import android.widget.EditText;
@@ -34,6 +36,17 @@ public abstract class ActivityBase extends Activity
 	
 	protected abstract int onActivityContentView();
 	protected abstract void onActivityCreate();
+	
+	
+	protected void orientationPortrait()
+	{
+		 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+	}
+	
+	protected void orientationLandscape()
+	{
+		 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+	}
 	
 	
 	public EditText widgetEditText(int resId)
@@ -204,4 +217,10 @@ public abstract class ActivityBase extends Activity
     }
     
     protected abstract void onActivityBackPressed();
+    
+    
+    protected void runActivity(Class<?> cls)
+    {
+    	 startActivity(new Intent(getApplicationContext(),cls));
+    }
 }
