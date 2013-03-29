@@ -3,6 +3,7 @@ package com.android.lifter.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.Window;
@@ -21,6 +22,7 @@ import android.widget.Spinner;
 import java.lang.reflect.ParameterizedType;
 
 import com.android.lifter.logging.Loger;
+import com.android.lifter.util.ScreenHelper;
 
 
 public abstract class ActivityBase extends Activity 
@@ -34,9 +36,32 @@ public abstract class ActivityBase extends Activity
 	    
 	    if(iContentView == 0)
 	    {
-	    	throw new RuntimeException("ActivityBase::onActivityContentView() returned 0"); 
+	    	throw new RuntimeException("ActivityBase::onActivityContentView() onActivityContentView() is not set"); 
 	    }
-	    	    
+	   
+	    int iScreenSize = getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
+	    int iPixWidth   = ScreenHelper.getScreenWidth(getApplicationContext());
+	    int iPixHeight  = ScreenHelper.getScreenHeight(getApplicationContext());
+	    
+	    switch(iScreenSize) 
+	    {
+	    case Configuration.SCREENLAYOUT_SIZE_LARGE:
+	    	Loger.d("ActivityBase::onCreate() - screen large - width " + iPixWidth + " height " + iPixHeight);
+	        break;
+	        
+	    case Configuration.SCREENLAYOUT_SIZE_NORMAL:
+	    	Loger.d("ActivityBase::onCreate() - screen normal - width " + iPixWidth + " height " + iPixHeight);
+	        break;
+	        
+	    case Configuration.SCREENLAYOUT_SIZE_SMALL:
+	    	Loger.d("ActivityBase::onCreate() - screen small - width " + iPixWidth + " height " + iPixHeight);
+	        break;
+	        
+	    default:
+	    	Loger.d("ActivityBase::onCreate() - screen unknown width " + iPixWidth + " height " + iPixHeight);
+	    	break;
+	    }
+	    
 	    
 	    onRequestFeature();
 	    setContentView(iContentView);

@@ -43,9 +43,6 @@ public class TextView extends android.widget.TextView
         		throw new RuntimeException("TextViewBase::parseAttributes() - can't load typeface - " + szTypeface);
         	}
         	
-        	Loger.d("Loading font.... setting typeface");
-
-        	
             setTypeface(tfTypeface);
         }
     }
