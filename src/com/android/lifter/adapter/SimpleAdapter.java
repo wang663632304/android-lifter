@@ -35,6 +35,20 @@ public abstract class SimpleAdapter<T> extends BaseAdapter
         return alItem.get(id);
     }
     
+    public void remove(int id)
+    {
+    	alItem.remove(id);
+    }
+    
+    public void remove(T item)
+    {
+    	alItem.remove(item);
+    }
+    
+    public void clear()
+    {
+    	alItem.clear();
+    }
     
     @Override
     public final long getItemId(int i) 
@@ -77,6 +91,13 @@ public abstract class SimpleAdapter<T> extends BaseAdapter
 	
 	protected abstract int getItemAdapter();
 	protected abstract void getItemView(int position,T item,View convertView,ViewGroup parent);
+	
+	
+	public void refresh()
+	{
+		notifyDataSetInvalidated();
+		notifyDataSetChanged();
+	}
 }
 
 
