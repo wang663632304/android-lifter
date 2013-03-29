@@ -71,12 +71,12 @@ public abstract class SimpleAdapter<T> extends BaseAdapter
         }
 		
 		
-		getItemView(item,view,parent);
+		getItemView(position,item,view,parent);
 		return view; 
 	}
 	
 	protected abstract int getItemAdapter();
-	protected abstract void getItemView(T item,View convertView,ViewGroup parent);
+	protected abstract void getItemView(int position,T item,View convertView,ViewGroup parent);
 }
 
 

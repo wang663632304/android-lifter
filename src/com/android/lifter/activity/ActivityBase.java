@@ -18,6 +18,11 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
+import java.lang.reflect.ParameterizedType;
+
+import com.android.lifter.logging.Loger;
+
+
 public abstract class ActivityBase extends Activity 
 {
 	@Override
@@ -31,6 +36,7 @@ public abstract class ActivityBase extends Activity
 	    {
 	    	throw new RuntimeException("ActivityBase::onActivityContentView() returned 0"); 
 	    }
+	    	    
 	    
 	    onRequestFeature();
 	    setContentView(iContentView);
