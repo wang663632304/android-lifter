@@ -15,7 +15,7 @@ public class Loger
 		String szLine = "" + Thread.currentThread().getStackTrace()[3].getLineNumber();
 		
 		
-		Log.d("@@@","-------------------------------------------------------------------------------------");
+		Log.d("@@@","");
 		Log.d("@@@","-------------------------------------------------------------------------------------");
 		Log.d("@@@","file:  " + szFile);
 		Log.d("@@@","line:  " + szLine);
@@ -24,6 +24,28 @@ public class Loger
 		Log.d("@@@","-------------------------------------------------------------------------------------");
 		Log.d("@@@",szText.trim());
 		Log.d("@@@","-------------------------------------------------------------------------------------");
+		Log.d("@@@","");
+	}
+	
+	public static void memory()
+	{
+		Long lMemFree = Runtime.getRuntime().freeMemory();
+		Long lMemMax = Runtime.getRuntime().maxMemory();
+		Long lMemTotal = Runtime.getRuntime().totalMemory();
+		
+		String szMem = "free mem: " + humanReadableByteCount(lMemFree,false) + " max mem: " + humanReadableByteCount(lMemMax,false) + " total mem: " + humanReadableByteCount(lMemTotal,false);
+	
 		Log.d("@@@","-------------------------------------------------------------------------------------");
+		Log.d("@@@",szMem);
+		Log.d("@@@","-------------------------------------------------------------------------------------");
+	}
+	
+	private static String humanReadableByteCount(long bytes, boolean si) 
+	{
+	    int unit = si ? 1000 : 1024;
+	    if (bytes < unit) return bytes + " B";
+	    int exp = (int) (Math.log(bytes) / Math.log(unit));
+	    String pre = (si ? "kMGTPE" : "KMGTPE").charAt(exp-1) + (si ? "" : "i");
+	    return String.format("%.1f %sB", bytes / Math.pow(unit, exp), pre);
 	}
 }
