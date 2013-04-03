@@ -1,10 +1,13 @@
 package com.android.lifter.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
 import android.view.Menu;
 import android.view.Window;
 import android.view.WindowManager;
@@ -27,6 +30,10 @@ import com.android.lifter.util.ScreenHelper;
 
 public abstract class ActivityBase extends Activity 
 {
+	private PowerManager pmPower = null;
+	private WakeLock wlScreen = null;
+	
+	
 	@Override
 	public final void onCreate(Bundle savedInstanceState) 
 	{
@@ -42,31 +49,42 @@ public abstract class ActivityBase extends Activity
 	    int iScreenSize = getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
 	    int iPixWidth   = ScreenHelper.getScreenWidth(getApplicationContext());
 	    int iPixHeight  = ScreenHelper.getScreenHeight(getApplicationContext());
+	    int iScreenInches = ScreenHelper.getScreeenInches(getApplicationContext());
 	    
 	    switch(iScreenSize) 
 	    {
 	    case Configuration.SCREENLAYOUT_SIZE_LARGE:
-	    	Loger.d("ActivityBase::onCreate() - screen large - width " + iPixWidth + " height " + iPixHeight);
+	    	Loger.d("ActivityBase::onCreate() - screen large - width " + iPixWidth + " height " + iPixHeight + " inches " + iScreenInches);
 	        break;
 	        
 	    case Configuration.SCREENLAYOUT_SIZE_NORMAL:
-	    	Loger.d("ActivityBase::onCreate() - screen normal - width " + iPixWidth + " height " + iPixHeight);
+	    	Loger.d("ActivityBase::onCreate() - screen normal - width " + iPixWidth + " height " + iPixHeight + " inches " + iScreenInches);
 	        break;
 	        
 	    case Configuration.SCREENLAYOUT_SIZE_SMALL:
-	    	Loger.d("ActivityBase::onCreate() - screen small - width " + iPixWidth + " height " + iPixHeight);
+	    	Loger.d("ActivityBase::onCreate() - screen small - width " + iPixWidth + " height " + iPixHeight + " inches " + iScreenInches);
 	        break;
 	        
 	    default:
-	    	Loger.d("ActivityBase::onCreate() - screen unknown width " + iPixWidth + " height " + iPixHeight);
+	    	Loger.d("ActivityBase::onCreate() - screen unknown width " + iPixWidth + " height " + iPixHeight + " inches " + iScreenInches);
 	    	break;
 	    }
 	    
+
+	    Loger.memory();
 	    
+	    
+        pmPower  = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        wlScreen = pmPower.newWakeLock(PowerManager.FULL_WAKE_LOCK, "WakeLock Tag");
+        wlScreen.acquire();
+	    
+        
 	    onRequestFeature();
 	    setContentView(iContentView);
 	    onActivityCreate();
 	}
+	
+	
 	
 	protected abstract void onRequestFeature();
 	protected abstract int onActivityContentView();
@@ -92,6 +110,21 @@ public abstract class ActivityBase extends Activity
 	{
 		 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 	}
+	
+	protected void hideSoftKeyboard()
+	{
+		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+	}
+	
+	
+	@Override
+	protected final void onResume() 
+	{
+		super.onResume();
+		onActivityResume();
+	}
+
+	protected abstract void onActivityResume();
 	
 	
 	public EditText widgetEditText(int resId)
