@@ -5,8 +5,11 @@ import com.android.lifter.logging.Loger;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
+import android.util.TypedValue;
+import android.view.View;
 
 
 public class TextView extends android.widget.TextView
@@ -33,6 +36,7 @@ public class TextView extends android.widget.TextView
         TypedArray taValue  = context.obtainStyledAttributes(attrs, R.styleable.TextView);
         String szTypeface   = taValue.getString(R.styleable.TextView_typeface);
         Typeface tfTypeface = null;
+                
         
         if(szTypeface != null && szTypeface.length() > 0)
         {
@@ -45,7 +49,6 @@ public class TextView extends android.widget.TextView
         	
             setTypeface(tfTypeface);
         }
+        
     }
-    
-    
 }

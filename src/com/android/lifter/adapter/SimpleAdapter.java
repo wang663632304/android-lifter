@@ -13,16 +13,22 @@ public abstract class SimpleAdapter<T> extends BaseAdapter
 {
     private ArrayList<T> alItem = new ArrayList<T>();
     private LayoutInflater mInflater;
+    private boolean bUnique = false;
     
     public SimpleAdapter(Context ctx)
     {
         mInflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
   
+    public void setUnique(boolean bUnique)
+    {
+    	this.bUnique = bUnique;
+    }
+    
     
     public void add(T item)
     { 
-    	if(alItem.contains(item))
+    	if(bUnique == true && alItem.contains(item))
     	{
     		return;
     	}
