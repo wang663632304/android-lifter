@@ -2,7 +2,6 @@
 <resources>
     <attr name="typeface" format="string" />
     
-    
     <declare-styleable name="Button">
         <attr name="typeface"/>
     </declare-styleable>

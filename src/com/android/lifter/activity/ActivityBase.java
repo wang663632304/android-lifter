@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.CheckBox;
 import android.widget.Button;
@@ -247,6 +248,18 @@ public abstract class ActivityBase extends Activity
 		return widget;
 	}
 	
+	public LinearLayout widgetLinearLayout(int resId)
+	{
+		LinearLayout widget = (LinearLayout) findViewById(resId);
+		
+		if(widget == null)
+		{
+			throw new RuntimeException("ActivityBase::widgetSpinner() - now such resource"); 
+		}
+		
+		return widget;
+	}
+	
 	
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) 
@@ -290,11 +303,13 @@ public abstract class ActivityBase extends Activity
     @Override
     public void onBackPressed() 
     {
-    	onActivityBackPressed();
-        super.onBackPressed();
+    	if(onActivityBackPressed() == true)
+    	{
+    		super.onBackPressed();
+    	}
     }
     
-    protected abstract void onActivityBackPressed();
+    protected abstract boolean onActivityBackPressed();
     
     
     protected void runActivity(Class<?> cls)
