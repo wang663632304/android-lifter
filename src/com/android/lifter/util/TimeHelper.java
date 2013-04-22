@@ -23,6 +23,6 @@ public class TimeHelper
 		 int minutes = seconds/60;
 		 seconds = seconds % 60;
 		 
-		 return String.format("%02:%02d:%02d",hours, minutes,seconds);
+		 return String.format("%02d:%02d:%02d",hours, minutes,seconds);
 	}
 }
