@@ -13,6 +13,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.CheckBox;
 import android.widget.Button;
@@ -122,6 +123,7 @@ public abstract class ActivityBase extends Activity
 	protected final void onResume() 
 	{
 		super.onResume();
+		wlScreen.acquire();
 		onActivityResume();
 	}
 
@@ -171,6 +173,18 @@ public abstract class ActivityBase extends Activity
 		if(widget == null)
 		{
 			throw new RuntimeException("ActivityBase::widgetButton() - now such resource"); 
+		}
+		
+		return widget;
+	}
+	
+	public ProgressBar widgetProgressBar(int resId)
+	{
+		ProgressBar widget = (ProgressBar) findViewById(resId);
+		
+		if(widget == null)
+		{
+			throw new RuntimeException("ActivityBase::widgetProgressBar() - now such resource"); 
 		}
 		
 		return widget;
@@ -283,6 +297,7 @@ public abstract class ActivityBase extends Activity
     @Override
     protected final void onPause() 
     {
+    	wlScreen.release();
     	onActivityPause();
     	super.onPause();
     }
@@ -293,6 +308,7 @@ public abstract class ActivityBase extends Activity
     @Override
     protected void onDestroy()
     {
+    	wlScreen.release();
     	onActivityDestroy();
     	super.onDestroy();
     }

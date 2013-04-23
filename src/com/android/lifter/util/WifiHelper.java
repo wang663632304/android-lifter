@@ -5,7 +5,7 @@ import android.net.ConnectivityManager;
 
 public class WifiHelper 
 {
-	public boolean isWifi(Context ctx)
+	public static boolean isWifi(Context ctx)
     {
         ConnectivityManager hConnMngr = (ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
         boolean bInetWifi = hConnMngr.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnected();
