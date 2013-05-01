@@ -120,12 +120,8 @@ public final class HttpClient
         HttpsURLConnection.setDefaultSSLSocketFactory(scContext.getSocketFactory());
 	}
 	
-	/**
-	 * Realizuje wywolanie get
-	 * 
-	 */
-	public void get() throws IOException
-	{	
+	private HttpURLConnection openConnection() throws IOException
+	{
 		if(hUrl.getProtocol().toLowerCase().equals("https"))
 		{
 			HostnameVerifier hvVerifier = new HostnameVerifier()
@@ -138,12 +134,21 @@ public final class HttpClient
             
 			HttpsURLConnection hHttpsConn = (HttpsURLConnection) hUrl.openConnection();
 			hHttpsConn.setHostnameVerifier(hvVerifier);
-			hConn = (HttpURLConnection) hHttpsConn;
+			return (HttpURLConnection) hHttpsConn;
 		}
 		else
 		{
-			hConn = (HttpURLConnection) hUrl.openConnection();
+			return (HttpURLConnection) hUrl.openConnection();
 		}
+	}
+	
+	/**
+	 * Realizuje wywolanie get
+	 * 
+	 */
+	public void get() throws IOException
+	{	
+		hConn = openConnection();
 		
 		hConn.setRequestMethod("GET");
 		hConn.setRequestProperty("User-Agent","MobileAppZapstreak-1.0");
@@ -217,27 +222,8 @@ public final class HttpClient
 			byParam = null;
 		}
 			
-	
 		
-		if(hUrl.getProtocol().toLowerCase().equals("https"))
-		{
-			HostnameVerifier hvVerifier = new HostnameVerifier()
-            {
-                public boolean verify(String hostname, SSLSession session)
-                {
-                    return true;
-                }
-            };
-		
-			HttpsURLConnection hHttpsConn = (HttpsURLConnection) hUrl.openConnection();
-			hHttpsConn.setHostnameVerifier(hvVerifier);
-			hConn = (HttpURLConnection) hHttpsConn;
-		}
-		else
-		{
-			hConn = (HttpURLConnection) hUrl.openConnection();
-		}
-		
+		hConn = openConnection();
 		hConn.setRequestMethod("POST");  
 		hConn.setRequestProperty("User-Agent","MobileAppZapstreak-1.0");
 	    hConn.setRequestProperty("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
@@ -251,6 +237,7 @@ public final class HttpClient
 			hConn.setDoOutput(true);
 			hConn.getOutputStream().write(byParam);
 		}
+			
 	}
 	
 	/**

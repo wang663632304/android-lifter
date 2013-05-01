@@ -28,6 +28,7 @@ import java.lang.reflect.ParameterizedType;
 
 import com.android.lifter.logging.Loger;
 import com.android.lifter.util.ScreenHelper;
+import com.flurry.android.FlurryAgent;
 
 
 public abstract class ActivityBase extends Activity 
@@ -35,6 +36,19 @@ public abstract class ActivityBase extends Activity
 	private PowerManager pmPower = null;
 	private WakeLock wlScreen = null;
 	
+	@Override
+	protected void onStart()
+	{
+		super.onStart();
+		FlurryAgent.onStartSession(this, "2Z6VWDYZGYN8TN9GDN7P");
+	}
+	 
+	@Override
+	protected void onStop()
+	{
+		super.onStop();		
+		FlurryAgent.onEndSession(this);
+	}
 	
 	@Override
 	public final void onCreate(Bundle savedInstanceState) 

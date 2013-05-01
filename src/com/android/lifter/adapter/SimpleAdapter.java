@@ -1,6 +1,7 @@
 package com.android.lifter.adapter;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,8 +15,10 @@ public abstract class SimpleAdapter<T> extends BaseAdapter
 {
 	private Context coContext = null;
     private ArrayList<T> alItem = new ArrayList<T>();
+    private Hashtable<Integer,View> htView = new Hashtable<Integer,View>();
     private LayoutInflater mInflater;
     private boolean bUnique = false;
+     
     
     public SimpleAdapter(Context ctx)
     {
@@ -67,22 +70,25 @@ public abstract class SimpleAdapter<T> extends BaseAdapter
     public void remove(int id)
     {
     	alItem.remove(id);
+    	htView.clear();
     }
     
     public void remove(T item)
     {
     	alItem.remove(item);
+    	htView.clear();
     }
     
     public void clear()
     {
     	alItem.clear();
+    	htView.clear();
     }
     
     @Override
     public final long getItemId(int i) 
     {
-        return 0;
+        return i;
     }
     
     @Override
@@ -103,18 +109,17 @@ public abstract class SimpleAdapter<T> extends BaseAdapter
 		T item = alItem.get(position);
 		View view = convertView;
 		
-		if(view == null) 
-        {
+		if(htView.containsKey(position) == false)
+		{
 			view = mInflater.inflate(getItemAdapter(), null, false);
-        }        
+			getItemView(position,item,view,parent);
+			htView.put(position, view);
+		}
+		else
+		{
+			view = htView.get(position);
+		}
 	    
-		if(item == null)
-        {
-            return view;
-        }
-		
-		
-		getItemView(position,item,view,parent);
 		return view; 
 	}
 	
